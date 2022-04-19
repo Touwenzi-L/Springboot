@@ -1,6 +1,9 @@
 package com.touwenzi_l.controller;
 
+import com.touwenzi_l.dao.StudentDao;
 import com.touwenzi_l.pojo.Dog;
+import com.touwenzi_l.pojo.Student;
+import com.touwenzi_l.service.StudentService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,9 @@ public class controller {
 	 * 4、@component （把普通pojo实例化到spring容器中）
 	 * 5、@Resource  （把从容器中找到Dog的这个对象然后注入）
 	 */
+	/**
+	 * 这里的过滤器是针对servlet，即中央调度器（dispatcherservlet）;拦截器针对的是controller，是dispatcherspervlet接收后分配controller进行拦截
+	 */
 	@Resource
 	private Dog dog;
 	
@@ -26,4 +32,14 @@ public class controller {
 	public String Hello(){
 		return "hello Springboot"+dog.getName();
 	}
+	
+	@Resource
+	private StudentService studentService;
+	@RequestMapping("/query")
+	@ResponseBody
+	public String queryStudent(Integer id){
+		Student student = studentService.queryStudent(id);
+		return "查询结果 id 是"+id+", 学生="+student.toString();
+	}
+	
 }
